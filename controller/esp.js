@@ -82,6 +82,7 @@ function putActionByMac(req, res) {
         return logRsp('err not found');
     }
     me.action = action;
+    saveStore();
     res.send(`OK`);
 }
 
