@@ -1,0 +1,18 @@
+[Unit]
+Description=EspBlindService
+After=network.target
+
+#/etc/systemd/system/espBlindServer.service
+#log with journalctl -u espBlindServer.service
+[Service]
+#EnvironmentFile=/home/pi/espBlindControl/install/pienv.txt
+ExecStart=/usr/bin/node /home/pi/espBlindControl/index.js 
+WorkingDirectory=/home/pi/espBlindControl
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+Group=netdev
+
+[Install]
+WantedBy=multi-user.target
