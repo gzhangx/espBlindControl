@@ -62,7 +62,7 @@ function getActionByMac(req, res) {
     if (!me) {
         return logRsp('err not found');    
     }    
-    res.send(`OK=1&${me.actions}`);
+    res.send(`OK=1&${me.action}`);
 }
 
 function putActionByMac(req, res) {
