@@ -9,6 +9,7 @@ function makeRespond(func) {
             await func(req, res);
             next();
         } catch (err) {
+            console.log(err);
             res.send('ERR');
             next();
         }

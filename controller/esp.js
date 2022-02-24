@@ -80,7 +80,7 @@ function putActionByMac(req, res) {
     if (!me) {
         return logRsp('err not found');
     }
-    const action = Object.keys(query).filter(k => k !== 'mac').map(k => `${key}=${query[key]}`).join('&');
+    const action = Object.keys(query).filter(k => k !== 'mac').map(key => `${key}=${query[key]}`).join('&');
     me.action = action;
     saveStore();
     res.end(`OK`);
