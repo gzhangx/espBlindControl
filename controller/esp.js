@@ -26,7 +26,7 @@ function register(req, res) {
     const query = req.query;
     console.log(query);
     function logRsp(msg) {
-        res.send(msg);
+        res.end(msg);
         console.log(msg);
     }
     if (!query) return logRsp('err no query');
@@ -43,7 +43,7 @@ function register(req, res) {
         me.ip = ip;
     }
     saveStore();
-    res.send('OK');
+    res.end('OK');
 }
 
 
@@ -62,7 +62,7 @@ function getActionByMac(req, res) {
     if (!me) {
         return logRsp('err not found');    
     }    
-    res.send(`OK=1&${me.action}`);
+    res.end(`OK=1&${me.action}`);
 }
 
 function putActionByMac(req, res) {
@@ -83,7 +83,7 @@ function putActionByMac(req, res) {
     }
     me.action = action;
     saveStore();
-    res.send(`OK`);
+    res.end(`OK`);
 }
 
 module.exports = {
