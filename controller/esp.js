@@ -74,13 +74,13 @@ function putActionByMac(req, res) {
         console.log(msg);
     }
     if (!query) return logRsp('err no query');
-    const { mac, action} = query;
-    if (!mac) return logRsp('err no mac');
-    if (!action) return logRsp('err no action');
+    const { mac, } = query;
+    if (!mac) return logRsp('err no mac');    
     const me = store.iots[mac];
     if (!me) {
         return logRsp('err not found');
     }
+    const action = Object.keys(query).filter(k => k !== 'mac').map(k => `${key}=${query[key]}`).join('&');
     me.action = action;
     saveStore();
     res.end(`OK`);
