@@ -61,8 +61,10 @@ function getActionByMac(req, res) {
     const me = store.iots[mac];
     if (!me) {
         return logRsp('err not found');    
-    }    
-    res.end(`OK=1&${me.action}`);
+    }
+    const action = me.action;
+    me.action = '';
+    res.end(`OK=1&${action}`);
 }
 
 function putActionByMac(req, res) {
