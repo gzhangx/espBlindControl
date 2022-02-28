@@ -22,6 +22,7 @@ server.use(restify.plugins.queryParser());
 const maps = [
     ['/esp/register', esp.register],
     ['/esp/getAction', esp.getActionByMac],
+    ['/esp/getAll', esp.getAll],
     ['/esp/putAction', esp.putActionByMac],
 ]
 

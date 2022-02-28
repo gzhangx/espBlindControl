@@ -86,8 +86,15 @@ function putActionByMac(req, res) {
     res.end(`OK`);
 }
 
+function getAll(req, res) {
+    loadStore();    
+    res.send(store.iots);
+}
+
+
 module.exports = {
     register,
     getActionByMac,
     putActionByMac,
+    getAll,
 }
