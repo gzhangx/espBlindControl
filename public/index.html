@@ -1,0 +1,81 @@
+<html>
+
+<head>
+    <style>
+        #picopinout {
+            transform: rotate(-90deg) scale(2.5);
+        }
+
+        .pinrow {
+            height: 20;
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <h1>Control</h1>
+
+    <div id="mainEle">
+
+    </div>
+
+
+    <script type="text/javascript">
+        const base_addr = 'http://' + window.location.host;
+
+        // callback for when a pin's info is changed in the UI
+        
+
+        fetch(base_addr + "/getBlinds")
+            .then((response) => response.json())
+            .then((pininfo) => {
+                console.log('fetched pin info');
+
+                console.log(pininfo);
+                const keys = Object.keys(pininfo);
+                var mainEle = document.getElementById("mainEle");
+                function addText(txt) {
+                    var row = document.createElement("div");                                            
+                    row.innerText = txt;
+                    mainEle.appendChild(row);
+                }
+                function addControl(id, pin) {
+                    var row = document.createElement("div");
+                    var txt = document.createElement("input");
+                    txt.type = "input";
+                    txt.value="0";
+                    txt.onchange = ()=>{
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", `http://${pin.ip}/update`, true);
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                        xhr.send(JSON.stringify({
+                            id,
+                            //value: checkbox.checked,
+                            //inout: inout,
+                            type: 'servo',
+                            deg: txt.value,
+                        }));
+                    };
+                    row.appendChild(txt);
+                    mainEle.appendChild(row);
+                }
+                for(const key of keys) {
+                    addText("Key="+key);
+                    const pin = pininfo[key];
+                    addText("pin ip="+pin.ip);
+                    addText("pin name=" + pin.name);
+                    addText("controls=" );
+                    for(const ctrl of pin.controls) {
+                        addText("controls"+ctrl.name+" "+ctrl.ctlType);
+                        if (ctrl.ctlType === 'servo') addControl(ctrl.name, pin);
+                    }
+                }
+            })            
+        // TODO: handle errors
+    </script>
+
+</body>
+
+</html>

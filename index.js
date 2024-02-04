@@ -1,36 +1,27 @@
-const restify = require('restify');
+const port = 18082;
+const express = require('express');
+const app = express();
+const cors = require('cors');
 
-const esp = require('./controller/esp');
+app.use(cors())
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-const PORT = 8101;
-function makeRespond(func) {
-    return async (req, res, next) => {
-        try {
-            await func(req, res);
-            next();
-        } catch (err) {
-            console.log(err);
-            res.send('ERR');
-            next();
-        }
-    }
-}
 
-var server = restify.createServer();
-server.use(restify.plugins.queryParser());
+const blindsController = require('./controllers/blind');
 
-const maps = [
-    ['/esp/register', esp.register],
-    ['/esp/getAction', esp.getActionByMac],
-    ['/esp/getAll', esp.getAll],
-    ['/esp/putAction', esp.putActionByMac],
-]
 
-maps.forEach(m => {
-    server.get(m[0], makeRespond(m[1]));
+
+app.post('/registerBlinds', blindsController.registerBlinds);
+app.get('/getBlinds', blindsController.getBlinds);
+
+
+app.use(express.static("public"));
+
+// For parsing application/x-www-form-urlencoded
+
+
+
+app.listen(port, () => {
+    console.log(`server listening on port ${port}`)
 })
-
-
-server.listen(PORT, function () {
-    console.log('%s listening at %s', server.name, server.url);
-});

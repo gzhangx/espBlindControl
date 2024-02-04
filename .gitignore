@@ -1,2 +1,4 @@
 node_modules
-store.json
+
+blindsInfo.json
+secrets.json

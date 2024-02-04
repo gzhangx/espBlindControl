@@ -1,11 +1,10 @@
 [Unit]
-Description=EspBlindService
+Description=BlindControlService
 After=network.target
 
-#/etc/systemd/system/espBlindServer.service
-#log with journalctl -u espBlindServer.service
+#log with journalctl -u blindControl.service
 [Service]
-#EnvironmentFile=/home/pi/espBlindControl/install/pienv.txt
+EnvironmentFile=/home/pi/creds/pienv.txt
 ExecStart=/usr/bin/node /home/pi/espBlindControl/index.js 
 WorkingDirectory=/home/pi/espBlindControl
 StandardOutput=inherit
