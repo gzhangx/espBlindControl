@@ -85,14 +85,14 @@ def update(request):
     
     if ur["type"] == "servo":
         try:
-            deg = int(ur["deg"])
+            deg = int(ur["deg"])            
+            rev = int(deg*(MAX-MIN)/100 + MIN)
             if deg < 0:
-                deg = 0
+                rev = 0
             if deg > 100:
-                deg = 100
-            deg = int(deg*(MAX-MIN)/100 + MIN)
-            print("using deg " + str(deg))
-            pwmPins[ur["id"]].duty_ns(deg)
+                rev = 0
+            print("using deg " + str(rev)+" " + str(deg))
+            pwmPins[ur["id"]].duty_ns(rev)
         except Exception as e:
             print(e)
         return HTTPResponse(body="done")
