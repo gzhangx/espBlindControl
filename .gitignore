@@ -2,3 +2,4 @@ node_modules
 
 blindsInfo.json
 secrets.json
+*.FCStd1
