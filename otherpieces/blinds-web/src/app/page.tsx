@@ -37,9 +37,13 @@ export default function Home() {
                   <div className="mt-2.5 rounded-lg border-2 border-black" >
                     {c.controls.map(cc => cc.name).join(',')}
                     <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-                      {c.controls.map((cc,ctli) => {
+                      {c.controls.map((cc, ctli) => {
+                        const value = cc.value || '-1';
                         return <><div key={`shutter_cctl_ctl_${ctli}`}>
-                          Ctrl:{cc.name}
+                          Ctrl:{cc.name} <input type="text" value={value} onChange={e => {                            
+                            cc.value = e.target.value;
+                            setControls([...controls]);
+                          }}></input>
                         </div><div></div>
                         </>
                       })}

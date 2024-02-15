@@ -8,6 +8,7 @@ export type ControlTypes = 'servo';
 export interface ControlSwitch {
     name: string;
     ctlType: ControlTypes;
+    value: string;
 }
 export interface ShutterObj {
     name: string;
