@@ -16,7 +16,7 @@ app.post('/registerBlinds', blindsController.registerBlinds);
 app.get('/getBlinds', blindsController.getBlinds);
 
 
-app.use(express.static("public"));
+app.use(express.static("otherpieces/blinds-web/out"));
 
 // For parsing application/x-www-form-urlencoded
 
