@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState , Fragment} from 'react'
 
 import { ShutterObj, getBlinds, updateBlind } from '../components/api';
 export default function Home() {
@@ -23,11 +23,11 @@ export default function Home() {
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
       {
             controls.map((c, keyc) => {
-              return <><div key={'shutter_' + keyc} className="rounded-lg border-2 border-black">
-                <label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-gray-900">
+              return <Fragment key={'RootFram_'+keyc}><div key={'shutter_' + keyc} className="rounded-lg border-2 border-black">
+                <label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-gray-900" key='kk111lbl'>
                   {c.name}
                 </label>
-                <div className="mt-2.5">
+                <div className="mt-2.5" key='kk111'>
                   {c.ip}
                 </div>
               </div>
@@ -40,11 +40,12 @@ export default function Home() {
                     <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                       {c.controls.map((cc, ctli) => {
                         const value = cc.value || '-1';
-                        return <><div key={`shutter_cctl_ctl_${ctli}`}>
+                        return <Fragment key={`shutter_cctl_r${keyc}_ctl_${ctli}`} ><div key={`shutter_cctl_${keyc}_ctl_${ctli}`}>
                           Ctrl:{cc.name} <input type="text" value={value} onChange={e => {                            
                             cc.value = e.target.value;
                             updateBlind({
                               ip: c.ip,
+                              id: cc.name,
                               deg: cc.value,
                               type: cc.ctlType,
                             }).then(res => {
@@ -56,17 +57,17 @@ export default function Home() {
                             setControls([...controls]);
                           }}></input>
                         </div><div></div>
-                        </>
+                        </Fragment>
                       })}
                     </div>
                   </div>
                 </div>
-              </>
+              </Fragment>
             })
           }
         </div>
 
-        <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+        <div key='InfoText' className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           {curText}
         </div>
       </div>

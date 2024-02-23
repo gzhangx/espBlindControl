@@ -13,6 +13,9 @@ import urequests;
 ggsettings.init()
 
 DOWIFI = True
+APMODE = False
+
+rpiserver.doServoOps('GP15',20)
 
 baseUrl ='unknown'
 led = Pin("LED", Pin.OUT)
@@ -90,17 +93,20 @@ name = None
 doFlash(10,10)
 
 if DOWIFI:
-    with open('secrets.json') as sec_file:
-        data = ujson.load(sec_file)
-        name = data["name"]
-        baseUrl = data["ccSrv"]
-        print(data,data['ssid'],data['password'],baseUrl)
-        doFlash(3,200)
-        ifCfg = connect_mode(data['ssid'],data['password'])
-        doFlash(3,200)
+    if APMODE:
+        ap_mode("PicoW", "123456789")
+    else:
+        with open('secrets.json') as sec_file:
+            data = ujson.load(sec_file)
+            name = data["name"]
+            baseUrl = data["ccSrv"]
+            print(data,data['ssid'],data['password'],baseUrl)
+            doFlash(3,200)
+            ifCfg = connect_mode(data['ssid'],data['password'])
+            doFlash(3,200)
 #ap_mode("PicoW", "123456789")
 
-if DOWIFI:
+if DOWIFI and APMODE == False:
     ggsettings.name = name
     print("ifCfg", ifCfg)
     ipAddress = ifCfg[0]

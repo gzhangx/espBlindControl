@@ -78,35 +78,39 @@ class CoreResponse(HTTPResponse):
 def updateOptions(request):
     return CoreResponse(body="done")
 
+
+def doServoOps(id, deg):
+    rev = int(deg*(MAX-MIN)/100 + MIN)
+    if deg < 0:
+        rev = 0
+    if deg > 100:
+        rev = 0
+    print("using deg " + str(rev)+" " + str(deg))
+    pwmPins[id].duty_ns(rev)
+            
 @server.route("/update", method="POST")
 def update(request):
     print("dbgrm rquest data " + request.request_data)
     ur = json.loads(request.request_data)
     
-    if ur["type"] == "servo":
+    if ur.get("type") == "servo":
         try:
-            deg = int(ur["deg"])            
-            rev = int(deg*(MAX-MIN)/100 + MIN)
-            if deg < 0:
-                rev = 0
-            if deg > 100:
-                rev = 0
-            print("using deg " + str(rev)+" " + str(deg))
-            pwmPins[ur["id"]].duty_ns(rev)
+            deg = int(ur.get("deg"))
+            doServoOps(ur.get("id"), deg)            
         except Exception as e:
             print(e)
         return HTTPResponse(body="done")
     
-    pin = Pin(ur['id'], Pin.IN if ur[
-        'inout'] == 'IN' else Pin.OUT)
+    #pin = Pin(ur['id'], Pin.IN if ur[
+    #    'inout'] == 'IN' else Pin.OUT)
         
-    if ur['id'] == 'LED' or ur['inout'] == 'OUT' and ur["type"] != "PWM":
-        if ur['value']:            
-            pin.on()
-        else:            
-            pin.off()
+    #if ur['id'] == 'LED' or ur['inout'] == 'OUT' and ur["type"] != "PWM":
+    #    if ur['value']:            
+    #        pin.on()
+    #    else:            
+    #        pin.off()
 
-    return HTTPResponse(body="done")
+    return HTTPResponse(body="Unknown type " + str(ur.get("type")))
 
 
 @server.route("/pinstates")

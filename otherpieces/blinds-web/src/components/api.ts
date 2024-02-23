@@ -28,6 +28,7 @@ export async function getBlinds() {
 
 interface ControlUpdatePrms {
     ip: string;
+    id: string;
     type: ControlTypes;
     deg: string;
 }
