@@ -3,10 +3,11 @@ import Image from "next/image";
 
 import { useEffect, useState } from 'react'
 
-import { ShutterObj, getBlinds } from '../components/api';
+import { ShutterObj, getBlinds, updateBlind } from '../components/api';
 export default function Home() {
 
   const [controls, setControls] = useState<ShutterObj[]>([]);
+  const [curText, setCurText] = useState('');
   useEffect(() => {
     getBlinds().then(b => {
       console.log(b.data);
@@ -42,6 +43,16 @@ export default function Home() {
                         return <><div key={`shutter_cctl_ctl_${ctli}`}>
                           Ctrl:{cc.name} <input type="text" value={value} onChange={e => {                            
                             cc.value = e.target.value;
+                            updateBlind({
+                              ip: c.ip,
+                              deg: cc.value,
+                              type: cc.ctlType,
+                            }).then(res => {
+                              setCurText('Updated done ' + new Date().toISOString()+" "  + res.data.toString());
+                            }).catch(err => {
+                              console.log('Error happened ', err);
+                              setCurText('Updated Error ' + new Date().toISOString() + " " + err.message);
+                            })
                             setControls([...controls]);
                           }}></input>
                         </div><div></div>
@@ -53,6 +64,10 @@ export default function Home() {
               </>
             })
           }
+        </div>
+
+        <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+          {curText}
         </div>
       </div>
 

@@ -24,3 +24,19 @@ export async function getBlinds() {
     console.log(res);
     return res as any as { data: ShutterObj };
 }
+
+
+interface ControlUpdatePrms {
+    ip: string;
+    type: ControlTypes;
+    deg: string;
+}
+export async function updateBlind(prm: ControlUpdatePrms) {
+    const res = await util.doHttpRequest({
+        method: 'POST',
+        url: `http://${prm.ip}/update`,
+        data: prm,
+    });
+    console.log(res);
+    return res as any as { data: ShutterObj };
+}
