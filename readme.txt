@@ -16,3 +16,16 @@ http://192.168.0.xxxxx:18082/getBlinds gets blinds, contains in secrets.json
     "ssid":"xxxxxxx-low",
     "password":"xxxxxxxx"
     }
+
+
+each item register with
+
+{"shutter1":{"name":"shutter1","ip":"192.168.0.xxx","controls":[{"name":"GP15","ctlType":"servo"},{"name":"GP14","ctlType":"servo"}],"updateTime":"2025-02-21T17:16:35.288Z"}}
+
+http://192.168.0.xxx:18082/getBlinds will return the above
+
+
+POST http://192.168.0.xxx/update
+
+{"ip":"192.168.0.xxx","id":"GP15","deg":"0","type":"servo"}
+{"ip":"192.168.0.xxx","id":"GP15","deg":"90","type":"servo"}  //close
