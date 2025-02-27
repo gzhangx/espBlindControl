@@ -9,11 +9,13 @@ app.use(express.urlencoded({ extended: true }));
 
 
 const blindsController = require('./controllers/blind');
+const liftUpDownBlinds = require('./controllers/liftUpDownBlinds');
 
 
 
 app.post('/registerBlinds', blindsController.registerBlinds);
 app.get('/getBlinds', blindsController.getBlinds);
+app.post('/liftUpDownBlinds', liftUpDownBlinds.sendLiftUpDownCommand);
 
 
 app.use(express.static("otherpieces/blinds-web/out"));
