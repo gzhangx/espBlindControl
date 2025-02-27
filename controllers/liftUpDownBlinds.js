@@ -2,7 +2,7 @@ const i2c = require('i2c-bus');
 //i2cset -y 1 0x08 0x43 0 1 255 i
 
 
-export async function sendLiftUpDownCommand(req, res) {
+async function sendLiftUpDownCommand(req, res) {
     console.log('Got request sendLiftUpDownCommand ', req.body);
     const body = req.body;
     if (!body) {
@@ -80,4 +80,9 @@ function createI2cBuffer(cmd, time, device = 0) {
     // Slice the Buffer from the first non-zero byte
     const result = timeBuf.subarray(start);
     return Buffer.concat([pre, result]);
+}
+
+
+module.exports = {
+    sendLiftUpDownCommand   
 }
