@@ -10,7 +10,7 @@ async function sendLiftUpDownCommand(req, res) {
         return res.json({ msg: 'No body' });
     }
 
-    const { dir, timeStr, deviceStr } = body;
+    const { dir, time: timeStr, deviceStr } = body;
     const time = parseInt(timeStr);
     let device = 0;
     if (deviceStr) {
