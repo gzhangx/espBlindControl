@@ -1,4 +1,4 @@
-const url = "http://192.168.0.40:18082";
+const url = "http://192.168.0.119:18082";
 
 import { util } from '@gzhangx/googleapi'
 
@@ -40,4 +40,20 @@ export async function updateBlind(prm: ControlUpdatePrms) {
     });
     console.log(res);
     return res as any as { data: ShutterObj };
+}
+
+
+interface LiftUpDownParams {
+    device: 0;
+    dir: 'c' | 'C' | 's';
+    time: number;
+}
+export async function sendliftUpDownCommands(cmd: LiftUpDownParams) {
+    const res = await util.doHttpRequest({
+        method: 'POST',
+        url: `${url}/liftUpDownBlinds`,
+        data: cmd,
+    });
+    console.log(res);
+    return res as any as { data: { message: string } };
 }

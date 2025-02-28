@@ -3,11 +3,15 @@ import Image from "next/image";
 
 import { useEffect, useState , Fragment} from 'react'
 
-import { ShutterObj, getBlinds, updateBlind } from '../components/api';
+import { ShutterObj, getBlinds, updateBlind, sendliftUpDownCommands } from '../components/api';
 export default function Home() {
 
   const [controls, setControls] = useState<ShutterObj[]>([]);
   const [curText, setCurText] = useState('');
+
+  const [curLiftDir, setCurLiftDir] = useState<'c' | 'C' | 's'>('s');
+  const [curLiftTime, setCurLiftTime] = useState(30000);
+  const [errorStr, setErrorStr] = useState('');
   useEffect(() => {
     getBlinds().then(b => {
       console.log(b.data);
@@ -16,9 +20,56 @@ export default function Home() {
       console.log('get blind error', err);
     })
   }, []);
+
+  async function sendCommand(dir: 'c' | 'C' | 's') {
+    setErrorStr('');
+    sendliftUpDownCommands({
+      dir: 'C',
+      time: curLiftTime,
+      device: 0,
+    }).then(res => {
+      if (res.data.message) {
+        setErrorStr(new Date().toISOString() + ' ' + res.data.message);
+      }
+    })
+  }
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      
+      <div>
+        <table>
+          <tr>
+            <td><button className="btn btn-primary" onClick={() => {
+              if (curLiftTime > 0) {
+                sendCommand('c');
+              } else {
+                setErrorStr('time must > 0')
+              }
+            }}>{'<='}</button></td>
+            <td><button className="btn btn-primary" onClick={() => {
+              if (curLiftTime > 0) {                
+                sendCommand('C');
+              } else {
+                setErrorStr('time must > 0')
+              }
+            }}>{ '=>'}</button></td>
+            <td><button className="btn btn-primary" onClick={() => {              
+              sendCommand('s');
+            }}>Stop</button></td>
+            <td><input className="form-control" value={curLiftTime.toString()} onChange={e => {
+              if (!e) {
+                setCurLiftTime(0);
+              }
+              const v = parseInt(e.target.value);
+              if (isNaN(v) || v < 0) {
+                setErrorStr('bad int '+ e.target.value);
+                return;
+              }
+              setCurLiftTime(v);
+            }} ></input></td>
+          </tr>
+          <tr><td colSpan={3}>{ errorStr}</td></tr>
+        </table>
+      </div>
       <div className="">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
       {
