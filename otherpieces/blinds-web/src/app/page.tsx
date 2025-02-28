@@ -24,7 +24,7 @@ export default function Home() {
   async function sendCommand(dir: 'c' | 'C' | 's') {
     setErrorStr('');
     sendliftUpDownCommands({
-      dir: 'C',
+      dir,
       time: curLiftTime,
       device: 0,
     }).then(res => {
