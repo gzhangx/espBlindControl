@@ -32,7 +32,15 @@ async function sendLiftUpDownCommand(req, res) {
             msg:'Bad time ' + timeStr
         })
     }
-    await sendCommand(dir, time, device);
+    try {
+        await sendCommand(dir, time, device);
+    } catch (err) {
+        console.log('Sendcommand error', err);
+        return res.json({
+            message: 'Error ' + err.message,
+            error: err.message,
+        })
+    }
     return res.json({
         msg: 'done',
         dir,
